@@ -20,6 +20,7 @@ public class VisionTablesListener {
     public VisionTablesListener() {
         networkTable = NetworkTableInstance.getDefault();
         visionTable = networkTable.getTable("Vision");
+        SmartDashboard.putString("Ansh", "Ansh");
         tagIDSub = visionTable.getIntegerArrayTopic("IDs").subscribe(new long[] {});
         xCoordsSub = visionTable.getIntegerArrayTopic("X Coords").subscribe(new long[] {});
         yCoordsSub = visionTable.getIntegerArrayTopic("Y Coords").subscribe(new long[] {});

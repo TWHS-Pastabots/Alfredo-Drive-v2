@@ -52,7 +52,7 @@ public class Drivebase extends SubsystemBase {
     gyro = new AHRS(SPI.Port.kMXP);
 
 
-    gyro.setAngleAdjustment(90);
+   gyro.setAngleAdjustment(90);
     gyro.zeroYaw();
 
     odometry = new SwerveDriveOdometry(
@@ -142,17 +142,20 @@ public class Drivebase extends SubsystemBase {
     backRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  public ChassisSpeeds getRobotRelativeSpeeds() {
+  public ChassisSpeeds getRobotRelativeSpeeds() { 
+    if (speeds == null) {
+      new ChassisSpeeds(0, 0, 90);
+    }
     return speeds;
   }
 
   public Command getCommand(String pathName) {
   PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
-  return new FollowPathWithEvents(
-  new FollowPathHolonomic(path, this::getPose, this::getRobotRelativeSpeeds,
-  this::setChassisSpeed, config, this),
-  path, this::getPose);
+  // return new FollowPathWithEvents(
+  return new FollowPathHolonomic(path, this::getPose, this::getRobotRelativeSpeeds,
+  this::setChassisSpeed, config, this);
+  // path, this::getPose);
   }
 
   public void lockWheels() {
@@ -171,7 +174,7 @@ public class Drivebase extends SubsystemBase {
     frontRight.setDesiredState(desiredStates[1]);
     backRight.setDesiredState(desiredStates[3]);
   }
-
+  
   // sets drive encoders to 0
   public void resetEncoders() {
     frontLeft.resetEncoders();
