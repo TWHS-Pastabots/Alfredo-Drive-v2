@@ -19,8 +19,8 @@ public class Robot extends TimedRobot {
   private Arm arm;
   private VisionTablesListener visionTables;
 
-  // private static TorqueLogiPro driver;
-  private static PS4Controller driver;
+   private static TorqueLogiPro driver;
+//private static PS4Controller driver;
   private static XboxController operator;
 
   private boolean outtake;
@@ -40,8 +40,8 @@ public class Robot extends TimedRobot {
     arm = Arm.getInstance();
     visionTables = VisionTablesListener.getInstance();
 
-    // driver = new TorqueLogiPro(0);
-    driver = new PS4Controller(0);
+     driver = new TorqueLogiPro(0);
+   // driver = new PS4Controller(0);
     operator = new XboxController(1);
 
     m_chooser.addOption("Drive Command", kDefaultAuto);
@@ -91,26 +91,27 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     /* Drive Controls */
-    // double ySpeed = -driver.getRoll();
-    // double xSpeed = -driver.getPitch();
+     double ySpeed = -driver.getRoll();
+     double xSpeed = -driver.getPitch();
 
-    double ySpeed = -driver.getLeftY();
-    double xSpeed = -driver.getLeftX();
-    double rot = driver.getRightX();
+   // double ySpeed = -driver.getLeftY();
+    //double xSpeed = -driver.getLeftX();
+   // double rot = driver.getPitch();
+   double rot = 0;
 
     SmartDashboard.putNumber("Xspeed", xSpeed);
     SmartDashboard.putNumber("Yspeed", ySpeed);
-    SmartDashboard.putNumber("rot", rot);
+   // SmartDashboard.putNumber("rot", rot);
 
-    // if (driver.getTrigger()) {
-    //   rot = driver.getYaw();
-    // }
+     if (driver.getTrigger()) {
+       rot = driver.getYaw();
+     }
 
-    // if (driver.getButtonByIndex(7)) {
-    //   drivebase.lockWheels();
-    // } else {
-    //   drivebase.drive(xSpeed, ySpeed, rot, true);
-    // }
+     if (driver.getButtonByIndex(7)) {
+       drivebase.lockWheels();
+     } else {
+       drivebase.drive(xSpeed, ySpeed, rot, true);
+     }
 
     // /* Arm Controls */
 
