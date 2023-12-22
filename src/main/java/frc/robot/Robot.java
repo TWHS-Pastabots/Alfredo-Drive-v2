@@ -94,9 +94,9 @@ public class Robot extends TimedRobot {
      double ySpeed = -driver.getRoll();
      double xSpeed = -driver.getPitch();
 
-   // double ySpeed = -driver.getLeftY();
-    //double xSpeed = -driver.getLeftX();
-   // double rot = driver.getPitch();
+   // double ySpeed = driver.getLeftY();
+    //double xSpeed = driver.getLeftX();
+   // double rot = driver.getRightX();
    double rot = 0;
 
     SmartDashboard.putNumber("Xspeed", xSpeed);
