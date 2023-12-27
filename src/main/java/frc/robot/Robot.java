@@ -18,6 +18,7 @@ public class Robot extends TimedRobot {
   private Intake intake;
   private Arm arm;
   private VisionTablesListener visionTables;
+  private AutoAlign visAlign;
 
    private static TorqueLogiPro driver;
 //private static PS4Controller driver;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
     intake = Intake.getInstance();
     arm = Arm.getInstance();
     visionTables = VisionTablesListener.getInstance();
+    visAlign = AutoAlign.getInstance();
 
      driver = new TorqueLogiPro(0);
    // driver = new PS4Controller(0);
@@ -109,6 +111,8 @@ public class Robot extends TimedRobot {
 
      if (driver.getButtonByIndex(7)) {
        drivebase.lockWheels();
+     } else if (driver.getButtonByIndex(2)){
+        drivebase.drive(0, visAlign.getYSpeed(), 0, true);
      } else {
        drivebase.drive(xSpeed, ySpeed, rot, true);
      }
