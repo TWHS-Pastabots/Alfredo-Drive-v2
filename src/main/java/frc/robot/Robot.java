@@ -29,8 +29,12 @@ public class Robot extends TimedRobot {
   private boolean manual;
 
   private Command driveCommand;
+  private Command driveCommand2;
 
-  private static final String kDefaultAuto = "DriveCommand";
+  private static final String kDefaultAuto = "Ansh";
+  private static final String kCustomAuto = "New Path";
+  private boolean isPathExecuted = false;
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -63,8 +67,12 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     driveCommand = drivebase.getCommand("Ansh");
-
     driveCommand.initialize();
+
+    driveCommand2 = drivebase.getCommand("New Path");
+    driveCommand2.initialize();
+
+    isPathExecuted = true;
 
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
@@ -75,14 +83,22 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-        driveCommand.execute();
+       // driveCommand.execute();
 
-    // switch (m_autoSelected) {
-    // case kDefaultAuto:
-    // default:
-    // driveCommand.execute();
-    // break;
-    // }
+
+      if(isPathExecuted){
+        driveCommand.execute();
+        isPathExecuted = false;
+      }
+
+     //switch (m_autoSelected){
+      //case kCustomAuto:
+       // driveCommand2.execute();
+        //break;
+      //case kDefaultAuto:
+       // driveCommand.execute();
+       // break;
+     //}
   }
 
   @Override
