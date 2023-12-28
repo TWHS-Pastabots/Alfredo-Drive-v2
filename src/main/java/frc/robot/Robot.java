@@ -1,11 +1,17 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Arm.ArmControlSpeed;
 import frc.robot.subsystems.Arm.ArmControlState;
@@ -29,14 +35,13 @@ public class Robot extends TimedRobot {
   private boolean manual;
 
   private Command driveCommand;
-  private Command driveCommand2;
 
   private static final String kDefaultAuto = "Ansh";
   private static final String kCustomAuto = "New Path";
   private boolean isPathExecuted = false;
 
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private Command m_autoSelected;
+  private SendableChooser<Command> m_chooser;
 
   @Override
   public void robotInit() {
@@ -50,14 +55,15 @@ public class Robot extends TimedRobot {
    // driver = new PS4Controller(0);
     operator = new XboxController(1);
 
-    m_chooser.addOption("Drive Command", kDefaultAuto);
+    SmartDashboard.putData("Ansh Auto", new PathPlannerAuto("Ansh"));
+    m_chooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
     drivebase.periodic();
-    // arm.update(0, 0);
 
     SmartDashboard.putBoolean("Arm Manual:", manual);
     visionTables.putInfoOnDashboard();
@@ -66,43 +72,30 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    driveCommand = drivebase.getCommand("Ansh");
-    driveCommand.initialize();
+    //m_autoSelected = m_chooser.getSelected();
+    m_autoSelected = new PathPlannerAuto("Ansh");
 
-    driveCommand2 = drivebase.getCommand("New Path");
-    driveCommand2.initialize();
+    if (m_autoSelected != null) {
+      m_autoSelected.schedule();
+    }
 
-    isPathExecuted = true;
-
-    m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+  
     visionTables.putInfoOnDashboard();
+
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-       // driveCommand.execute();
-
-
-      if(isPathExecuted){
-        driveCommand.execute();
-        isPathExecuted = false;
-      }
-
-     //switch (m_autoSelected){
-      //case kCustomAuto:
-       // driveCommand2.execute();
-        //break;
-      //case kDefaultAuto:
-       // driveCommand.execute();
-       // break;
-     //}
   }
 
   @Override
   public void teleopInit() {
+
+    if (m_autoSelected != null) {
+      m_autoSelected.cancel();
+    }
+  
   }
 
   @Override
