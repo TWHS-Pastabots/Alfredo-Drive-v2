@@ -3,15 +3,23 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class AutoAlign {
     VisionTablesListener vTListen;
-    double x;
-    private PIDController xPID = new PIDController(0.1, 0, 0);
+
+    private double xPose;
+    private double yPose;
+    private double zRot;
+
+    private double xSP = -.87;
+    private double ySP = -.67;
+    private double rotSP = 0;
+
+    private PIDController yPoseController = new PIDController(4.0, 0, 0);
+    private PIDController xPoseController = new PIDController(4.0, 0, 0);
+    private PIDController rotController = new PIDController(1.2, 0, 0);
+
     public static AutoAlign instance;
-    public double yMaxSpeed;
 
     public AutoAlign() {
         vTListen = VisionTablesListener.getInstance();
-        x = 0;
-        yMaxSpeed = 0.25;
     }
 
     public static AutoAlign getInstance() {
@@ -20,13 +28,55 @@ public class AutoAlign {
         return instance;
     }
     public double getYSpeed(){
-        x = vTListen.getX();
+        yPose = vTListen.getY();
 
-        if(x < -0.7)
-            return yMaxSpeed;
-        else if(x > -0.64)
-            return -yMaxSpeed;
-        return 0.0;
+        if(!reachYPose(0.01, yPose)) {
+            return yPoseController.calculate(yPose, ySP);
+        } 
+        return 0;
     }
 
+    public double getXSpeed(){
+        xPose = vTListen.getX();
+
+        if(!reachYPose(0.01, xPose)) {
+            return xPoseController.calculate(xPose, xSP);
+        }
+        return 0;
+
+    }
+    public double getRotSpeed(){
+        zRot = vTListen.getRot();
+
+        if(!reachYPose(0.01, zRot)) {
+            return rotController. calculate(zRot, rotSP);
+        }
+        return 0;
+    }
+
+    public boolean reachXPose(double tolerance, double measurment){
+        if (Math.abs(measurment - xSP) < tolerance){
+            return true;
+        }
+
+        return false;
+    }
+
+        public boolean reachYPose(double tolerance, double measurment){
+        if (Math.abs(measurment - ySP) < tolerance){
+            return true;
+        }
+         return false;
+    }
+
+            public boolean reachRot(double tolerance, double measurment){
+        if (Math.abs(measurment - rotSP) < tolerance){
+            return true;
+        }
+         return false;
+    }
+
+        public double getY(){
+            return yPose;
+        }
 }

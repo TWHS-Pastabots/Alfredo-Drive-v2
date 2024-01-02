@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 
   private Command driveCommand;
 
-  private static final String kDefaultAuto = "Ansh";
+  private static final String kDefaultAuto = "TestAuto";
   private static final String kCustomAuto = "New Path";
   private boolean isPathExecuted = false;
 
@@ -55,7 +55,9 @@ public class Robot extends TimedRobot {
    // driver = new PS4Controller(0);
     operator = new XboxController(1);
 
-    SmartDashboard.putData("Ansh Auto", new PathPlannerAuto("Ansh"));
+    drivebase.resetOdometry(new Pose2d(0.0, 0.0, new Rotation2d(0)));
+
+    SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
     m_chooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto choices", m_chooser);
   }
@@ -73,7 +75,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     //m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = new PathPlannerAuto("Ansh");
+    m_autoSelected = new PathPlannerAuto("TestAuto");
 
     if (m_autoSelected != null) {
       m_autoSelected.schedule();
@@ -101,6 +103,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
+    boolean fieldRelative = true;
+
     /* Drive Controls */
      double ySpeed = -driver.getRoll();
      double xSpeed = -driver.getPitch();
@@ -112,18 +116,25 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Xspeed", xSpeed);
     SmartDashboard.putNumber("Yspeed", ySpeed);
+    SmartDashboard.putNumber("Vision yPose", visAlign.getY());
    // SmartDashboard.putNumber("rot", rot);
 
      if (driver.getTrigger()) {
        rot = driver.getYaw();
      }
 
+     if (driver.getButtonByIndex(10)){
+      fieldRelative = ! fieldRelative;
+     }
+
      if (driver.getButtonByIndex(7)) {
        drivebase.lockWheels();
      } else if (driver.getButtonByIndex(2)){
-        drivebase.drive(0, visAlign.getYSpeed(), 0, true);
+        //drivebase.drive(0, 0, visAlign.getRotSpeed(), fieldRelative);
+        drivebase.drive(visAlign.getXSpeed(), visAlign.getYSpeed(), 0, fieldRelative);
+
      } else {
-       drivebase.drive(xSpeed, ySpeed, rot, true);
+       drivebase.drive(xSpeed, ySpeed, rot, fieldRelative);
      }
 
     // /* Arm Controls */

@@ -13,7 +13,10 @@ public class VisionTablesListener {
     final IntegerArraySubscriber tagIDSub;
     private IntegerArraySubscriber xCoordsSub;
     private IntegerArraySubscriber yCoordsSub;
-    double xPos = 0;
+    private IntegerArraySubscriber zRotsSub;
+    double yPose = 0;
+    double xPose = 0;
+    double zRot = 0;
     // private IntegerArraySubscriber xEulerSub;
     // private IntegerArraySubscriber yEulerSub;
     // private IntegerArraySubscriber zEulerSub;
@@ -24,6 +27,7 @@ public class VisionTablesListener {
         tagIDSub = visionTable.getIntegerArrayTopic("IDs").subscribe(new long[] {});
         xCoordsSub = visionTable.getIntegerArrayTopic("X Coords").subscribe(new long[] {});
         yCoordsSub = visionTable.getIntegerArrayTopic("Y Coords").subscribe(new long[] {});
+        zRotsSub = visionTable.getIntegerArrayTopic("Z Euler Angles").subscribe(new long[] {});
         // xEulerSub = visionTable.getIntegerArrayTopic("X Euler Angles").subscribe(new
         // long[] {});
         // yEulerSub = visionTable.getIntegerArrayTopic("Y Euler Angles").subscribe(new
@@ -34,17 +38,35 @@ public class VisionTablesListener {
 
     public void putInfoOnDashboard() {
         double id = 0;
-        double yPos = 0;
+        boolean tagVisible;
+
+        double[] xPoses;
+        double[] yPoses;
+        double[] zRots;
+
         if(tagIDSub.get().length != 0){
             id = convertArray(tagIDSub.get())[0];
-            xPos = convertArray(xCoordsSub.get())[0];
-            yPos = convertArray(yCoordsSub.get())[0];
+            yPoses = convertArray(yCoordsSub.get());
+            xPoses = convertArray(xCoordsSub.get());
+            zRots = convertArray(zRotsSub.get());
+            tagVisible = true;
+        } else {
+            xPoses = new double[]{-.87}; 
+            yPoses = new double[]{-.67}; 
+            zRots = new double[]{.1}; 
+            tagVisible = false;
         }
         SmartDashboard.putNumber("IDs", id);
+
+        xPose = xPoses[xPoses.length - 1];
+        yPose = yPoses[yPoses.length - 1];
+        zRot = zRots[zRots.length - 1];
          
         // SmartDashboard.putNumberArray("IDs", convertArray(tagIDSub.get()));
-        SmartDashboard.putNumber("X Coords", xPos);
-        SmartDashboard.putNumber("Y Coords", yPos);
+        SmartDashboard.putNumber("X Coords", xPose);
+        SmartDashboard.putNumber("Y Coords", yPose);
+        SmartDashboard.putNumber("Z Rot", zRot);
+        SmartDashboard.putBoolean("Tag in Sight", tagVisible);
         // SmartDashboard.putNumberArray("X Euler Angles",
         // convertArray(xEulerSub.get()));
         // SmartDashboard.putNumberArray("Y Euler Angles",
@@ -70,7 +92,15 @@ public class VisionTablesListener {
         return instance;
     }
 
-    public double getX() {
-        return xPos;
+    public double getRot(){
+        return zRot;
+    }
+
+    public double getY() {
+        return yPose;
+    }
+
+      public double getX() {
+        return xPose;
     }
 }

@@ -177,7 +177,6 @@ public class Drivebase extends SubsystemBase {
 
   public ChassisSpeeds getSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-
   }
 
   public void resetPose(final Pose2d pose) {
