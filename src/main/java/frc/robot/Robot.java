@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
 
   private Command driveCommand;
 
-  private static final String kDefaultAuto = "TestAuto";
-  private static final String kCustomAuto = "New Path";
+ // private static final String kDefaultAuto = "TestAuto";
+  //private static final String kCustomAuto = "New Path";
   private boolean isPathExecuted = false;
 
   private Command m_autoSelected;
@@ -56,9 +56,14 @@ public class Robot extends TimedRobot {
     operator = new XboxController(1);
 
     drivebase.resetOdometry(new Pose2d(0.0, 0.0, new Rotation2d(0)));
-
+    
     SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
+    SmartDashboard.putData("Ansh", new PathPlannerAuto("Ansh"));
+
+    
     m_chooser = AutoBuilder.buildAutoChooser();
+    m_chooser.setDefaultOption("Default Auto", new PathPlannerAuto("TestAuto"));
+    m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -74,8 +79,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    //m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = new PathPlannerAuto("TestAuto");
+    m_autoSelected = m_chooser.getSelected();
+    //m_autoSelected = new PathPlannerAuto("TestAuto");
 
     if (m_autoSelected != null) {
       m_autoSelected.schedule();
