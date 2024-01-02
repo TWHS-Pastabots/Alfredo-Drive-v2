@@ -51,9 +51,9 @@ public class VisionTablesListener {
             zRots = convertArray(zRotsSub.get());
             tagVisible = true;
         } else {
-            xPoses = new double[]{-.87}; 
+            xPoses = new double[]{-.77}; 
             yPoses = new double[]{-.67}; 
-            zRots = new double[]{.1}; 
+            zRots = new double[]{.5}; 
             tagVisible = false;
         }
         SmartDashboard.putNumber("IDs", id);

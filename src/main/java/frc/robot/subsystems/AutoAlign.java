@@ -8,12 +8,12 @@ public class AutoAlign {
     private double yPose;
     private double zRot;
 
-    private double xSP = -.87;
+    private double xSP = -.77;
     private double ySP = -.67;
     private double rotSP = 0;
 
-    private PIDController yPoseController = new PIDController(4.0, 0, 0);
-    private PIDController xPoseController = new PIDController(4.0, 0, 0);
+    private PIDController yPoseController = new PIDController(3.0, 0, 0);
+    private PIDController xPoseController = new PIDController(3.0, 0, 0);
     private PIDController rotController = new PIDController(1.2, 0, 0);
 
     public static AutoAlign instance;

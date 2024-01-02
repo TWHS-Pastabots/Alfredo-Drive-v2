@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Xspeed", xSpeed);
     SmartDashboard.putNumber("Yspeed", ySpeed);
     SmartDashboard.putNumber("Vision yPose", visAlign.getY());
-   // SmartDashboard.putNumber("rot", rot);
+   SmartDashboard.putNumber("rot", rot);
 
      if (driver.getTrigger()) {
        rot = driver.getYaw();
@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
        drivebase.lockWheels();
      } else if (driver.getButtonByIndex(2)){
         //drivebase.drive(0, 0, visAlign.getRotSpeed(), fieldRelative);
-        drivebase.drive(visAlign.getXSpeed(), visAlign.getYSpeed(), 0, fieldRelative);
+        drivebase.drive(visAlign.getXSpeed(), visAlign.getYSpeed(), visAlign.getRotSpeed(), fieldRelative);
 
      } else {
        drivebase.drive(xSpeed, ySpeed, rot, fieldRelative);
