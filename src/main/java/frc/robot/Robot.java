@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -12,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Auto.Sequences.TestAuto;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Arm.ArmControlSpeed;
 import frc.robot.subsystems.Arm.ArmControlState;
@@ -25,8 +25,9 @@ public class Robot extends TimedRobot {
   private Arm arm;
   private VisionTablesListener visionTables;
   private AutoAlign visAlign;
+  
 
-   private static TorqueLogiPro driver;
+  private static TorqueLogiPro driver;
 //private static PS4Controller driver;
   private static XboxController operator;
 
@@ -59,11 +60,13 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
     SmartDashboard.putData("Ansh", new PathPlannerAuto("Ansh"));
+    SmartDashboard.putData("First Full Auto", new TestAuto());
 
-    
+
     m_chooser = AutoBuilder.buildAutoChooser();
     m_chooser.setDefaultOption("Default Auto", new PathPlannerAuto("TestAuto"));
     m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
+    m_chooser.addOption("Arm+Drive Auto", new TestAuto());
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
