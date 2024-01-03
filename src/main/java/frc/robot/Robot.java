@@ -82,8 +82,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    m_autoSelected = m_chooser.getSelected();
-    //m_autoSelected = new PathPlannerAuto("TestAuto");
+   // m_autoSelected = m_chooser.getSelected();
+    m_autoSelected = new TestAuto();
 
     if (m_autoSelected != null) {
       m_autoSelected.schedule();

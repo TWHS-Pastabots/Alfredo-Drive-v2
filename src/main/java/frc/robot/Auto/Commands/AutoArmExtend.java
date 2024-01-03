@@ -20,6 +20,7 @@ public class AutoArmExtend extends Command {
     @Override
     public void execute() {
         arm.setState(ArmState.EXTENDED);
+        arm.update(0.0, 0.0);
 
         if (arm.hasReachedTargetPose(2.0)) {
             ended = true;

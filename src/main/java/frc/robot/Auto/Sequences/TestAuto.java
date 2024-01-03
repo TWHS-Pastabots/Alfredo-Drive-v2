@@ -9,14 +9,14 @@ public class TestAuto extends SequentialCommandGroup {
      public TestAuto(){
         addCommands(
             new PathPlannerAuto("TestAuto"),
-            new WaitCommand(2),
-            new AutoArmExtend(),
-            new WaitCommand(2),
-            new AutoOuttake(0.25),
-            new WaitCommand(2),
-            new AutoArmRetract(),
-            new WaitCommand(2),
-            new PathPlannerAuto("Testv2Auto")
+            new WaitCommand(2)
+            // new AutoArmExtend(),
+            // new WaitCommand(2)
+            // new AutoOuttake(0.25)
+            //new WaitCommand(2),
+            //new AutoArmRetract(),
+           // new WaitCommand(2),
+        //    new PathPlannerAuto("Testv2Auto")
             
 
         );
