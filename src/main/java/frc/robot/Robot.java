@@ -58,15 +58,16 @@ public class Robot extends TimedRobot {
 
     drivebase.resetOdometry(new Pose2d(0.0, 0.0, new Rotation2d(0)));
     
-    SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
-    SmartDashboard.putData("Ansh", new PathPlannerAuto("Ansh"));
-    SmartDashboard.putData("First Full Auto", new TestAuto());
+    //SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
+    //SmartDashboard.putData("Ansh", new PathPlannerAuto("Ansh"));
+    //SmartDashboard.putData("First Full Auto", new TestAuto());
 
 
     m_chooser = AutoBuilder.buildAutoChooser();
-    m_chooser.setDefaultOption("Default Auto", new PathPlannerAuto("TestAuto"));
-    m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
-    m_chooser.addOption("Arm+Drive Auto", new TestAuto());
+   // m_chooser.setDefaultOption("Default Auto", new PathPlannerAuto("TestAuto"));
+   // m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
+    m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
+    m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -82,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-   // m_autoSelected = m_chooser.getSelected();
+    //m_autoSelected = m_chooser.getSelected();
     m_autoSelected = new TestAuto();
 
     if (m_autoSelected != null) {
