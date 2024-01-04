@@ -8,7 +8,7 @@ public class AutoAlign {
     private double yPose;
     private double zRot;
 
-    private double xSP = -.77;
+    private double xSP = -.90;
     private double ySP = -.67;
     private double rotSP = 0;
 
@@ -30,7 +30,7 @@ public class AutoAlign {
     public double getYSpeed(){
         yPose = vTListen.getY();
 
-        if(!reachYPose(0.01, yPose)) {
+        if(!reachYPose(0.05, yPose)) {
             return yPoseController.calculate(yPose, ySP);
         } 
         return 0;
@@ -39,7 +39,7 @@ public class AutoAlign {
     public double getXSpeed(){
         xPose = vTListen.getX();
 
-        if(!reachYPose(0.01, xPose)) {
+        if(!reachYPose(0.05, xPose)) {
             return xPoseController.calculate(xPose, xSP);
         }
         return 0;
@@ -48,7 +48,7 @@ public class AutoAlign {
     public double getRotSpeed(){
         zRot = vTListen.getRot();
 
-        if(!reachYPose(0.01, zRot)) {
+        if(!reachYPose(0.05, zRot)) {
             return rotController. calculate(zRot, rotSP);
         }
         return 0;

@@ -51,28 +51,30 @@ public class VisionTablesListener {
             zRots = convertArray(zRotsSub.get());
             tagVisible = true;
         } else {
-            xPoses = new double[]{-.77}; 
+            id = 0;
+            xPoses = new double[]{-.90}; 
             yPoses = new double[]{-.67}; 
             zRots = new double[]{.5}; 
             tagVisible = false;
         }
         SmartDashboard.putNumber("IDs", id);
-
-        xPose = xPoses[xPoses.length - 1];
-        yPose = yPoses[yPoses.length - 1];
-        zRot = zRots[zRots.length - 1];
-         
-        // SmartDashboard.putNumberArray("IDs", convertArray(tagIDSub.get()));
-        SmartDashboard.putNumber("X Coords", xPose);
-        SmartDashboard.putNumber("Y Coords", yPose);
-        SmartDashboard.putNumber("Z Rot", zRot);
-        SmartDashboard.putBoolean("Tag in Sight", tagVisible);
-        // SmartDashboard.putNumberArray("X Euler Angles",
-        // convertArray(xEulerSub.get()));
-        // SmartDashboard.putNumberArray("Y Euler Angles",
-        // convertArray(yEulerSub.get()));
-        // SmartDashboard.putNumberArray("Z Euler Angles",
-        // convertArray(zEulerSub.get()));
+        if(xPoses.length != 0){
+            xPose = xPoses[0];
+            yPose = yPoses[0];
+            zRot = zRots[0];
+            
+            // SmartDashboard.putNumberArray("IDs", convertArray(tagIDSub.get()));
+            SmartDashboard.putNumber("X Coords", xPose);
+            SmartDashboard.putNumber("Y Coords", yPose);
+            SmartDashboard.putNumber("Z Rot", zRot);
+            SmartDashboard.putBoolean("Tag in Sight", tagVisible);
+            // SmartDashboard.putNumberArray("X Euler Angles",
+            // convertArray(xEulerSub.get()));
+            // SmartDashboard.putNumberArray("Y Euler Angles",
+            // convertArray(yEulerSub.get()));
+            // SmartDashboard.putNumberArray("Z Euler Angles",
+            // convertArray(zEulerSub.get()));
+    }
     }
 
     // need to convert each value to double individually, can't typecast entire
