@@ -12,7 +12,7 @@ public class TestAuto extends SequentialCommandGroup {
             new WaitCommand(2),
              new AutoArmExtend(),
             new WaitCommand(2),
-             new AutoOuttake(2),
+            new AutoOuttake(2),
             new WaitCommand(2)
             //new AutoArmRetract(),
            // new WaitCommand(2),

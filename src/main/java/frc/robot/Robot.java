@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
    // m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
     m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
     m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
+    m_chooser.addOption("Straight Auto", new PathPlannerAuto("Straight"));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
