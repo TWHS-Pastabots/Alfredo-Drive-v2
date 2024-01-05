@@ -114,7 +114,8 @@ public class Robot extends TimedRobot {
     boolean fieldRelative = true;
 
     /* Drive Controls */
-     double ySpeed = -driver.getRoll();
+     double 
+     ySpeed = -driver.getRoll();
      double xSpeed = -driver.getPitch();
 
    // double ySpeed = driver.getLeftY();
@@ -148,56 +149,54 @@ public class Robot extends TimedRobot {
     // /* Arm Controls */
 
     // // finer control when holding L1
-    // if (operator.getRawButton(Controller.XBOX_LB)) {
-    //   arm.setControlSpeed(ArmControlSpeed.FINE);
-    // } else {
-    //   arm.setControlSpeed(ArmControlSpeed.FULL);
-    // }
+     if (operator.getRawButton(Controller.XBOX_LB)) {
+       arm.setControlSpeed(ArmControlSpeed.FINE);
+     } else {
+       arm.setControlSpeed(ArmControlSpeed.FULL);
+     }
 
     // // manage arm control states
-    // if (driver.getRawButton(9)) {
-    //   if (arm.controlState == ArmControlState.MANUAL) {
-    //     arm.setControlState(ArmControlState.PID);
-    //     manual = false;
-    //   } else {
-    //     arm.setControlState(ArmControlState.MANUAL);
-    //     manual = true;
-    //   }
-    // }
+     if (driver.getRawButton(9)) {
+       if (arm.controlState == ArmControlState.MANUAL) {
+         arm.setControlState(ArmControlState.PID);
+         manual = false;
+       } else {
+         arm.setControlState(ArmControlState.MANUAL);
+         manual = true;
+       }
+     }
 
     // // manage arm PID states & update
 
-    // if (operator.getRawButton(Controller.XBOX_X)) {
-    //   arm.setState(ArmState.EXTENDED);
-    // } else if (operator.getRawButton(Controller.XBOX_Y)) {
-    //   arm.setState(ArmState.GROUND_INTAKE);
-    // } else if (operator.getRawButton(Controller.XBOX_LB)) {
-    //   arm.setState(ArmState.RETRACTED);
-    // } else if (operator.getRawButtonPressed(Controller.XBOX_RB)) {
-    //   if (cycle) {
-    //     arm.setState(ArmState.MID);
-    //     cycle = false;
-    //   } else {
-    //     arm.setState(ArmState.LOW);
-    //     cycle = true;
-    //   }
-    // }
+     if (operator.getRawButton(Controller.XBOX_X)) {
+       arm.setState(ArmState.EXTENDED);
+     } else if (operator.getRawButton(Controller.XBOX_Y)) {
+       arm.setState(ArmState.GROUND_INTAKE);
+     } else if (operator.getRawButton(Controller.XBOX_LB)) {
+       arm.setState(ArmState.RETRACTED);
+     } else if (operator.getRawButtonPressed(Controller.XBOX_RB)) {
+       if (cycle) {
+         arm.setState(ArmState.MID);
+         cycle = false;
+       } else {
+         arm.setState(ArmState.LOW);
+        cycle = true;
+       }
+     }
 
-    // arm.update(operator.getRawAxis(Controller.PS_AXIS_RIGHT_Y) * .5,
-    //     operator.getRawAxis(Controller.PS_AXIS_LEFT_Y) * .5);
+    arm.update(operator.getRawAxis(Controller.PS_AXIS_RIGHT_Y) * .5,
+        operator.getRawAxis(Controller.PS_AXIS_LEFT_Y) * .5);
 
-    // if (arm.state != ArmState.RETRACTED) {
-    //   outtake = operator.getRawButton(Controller.XBOX_A);
-    // } else {
-    //   outtake = false;
-    // }
-    // boolean intakeButton = operator.getRawButton(Controller.XBOX_B);
-    // intake.update(outtake, intakeButton);
+    if (arm.state != ArmState.RETRACTED) {
+      outtake = operator.getRawButton(Controller.XBOX_A);
+    } else {
+      outtake = false;
+    }
+    boolean intakeButton = operator.getRawButton(Controller.XBOX_B);
+    intake.update(outtake, intakeButton);
 
-    // /* Drive Controls */
-
-    // // slow driving while holding left bumper, fast while holding right bumper
-    // arm.update(0, 0);
+    
+    arm.update(0, 0);
     visionTables.putInfoOnDashboard();
   }
 
