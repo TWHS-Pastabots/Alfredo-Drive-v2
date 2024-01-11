@@ -63,17 +63,11 @@ public class Robot extends TimedRobot {
     operator = new XboxController(1);
 
     drivebase.resetOdometry(new Pose2d(0.0, 0.0, new Rotation2d(0)));
-    
-    //SmartDashboard.putData("Test Auto", new PathPlannerAuto("TestAuto"));
-    //SmartDashboard.putData("Ansh", new PathPlannerAuto("Ansh"));
-    //SmartDashboard.putData("First Full Auto", new TestAuto());
-
 
     m_chooser = AutoBuilder.buildAutoChooser();
-   // m_chooser.setDefaultOption("Default Auto", new PathPlannerAuto("TestAuto"));
-   // m_chooser.addOption("Ansh Auto", new PathPlannerAuto("Ansh"));
-    // m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
-    // m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
+    m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
+    m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
+    m_chooser.addOption("Straight Auto", new PathPlannerAuto("Straight"));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
