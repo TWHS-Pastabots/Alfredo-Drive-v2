@@ -2,13 +2,10 @@ package frc.robot.subsystems.Swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.*;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -19,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Ports;
 import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivebase extends SubsystemBase {
@@ -181,6 +177,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void resetPose(final Pose2d pose) {
+    
     //odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose);
   }
 

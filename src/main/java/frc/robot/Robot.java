@@ -4,8 +4,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.Current;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,7 +16,6 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.Arm.ArmControlSpeed;
 import frc.robot.subsystems.Arm.ArmControlState;
 import frc.robot.subsystems.Arm.ArmState;
-import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Swerve.Drivebase;
 
 public class Robot extends TimedRobot {

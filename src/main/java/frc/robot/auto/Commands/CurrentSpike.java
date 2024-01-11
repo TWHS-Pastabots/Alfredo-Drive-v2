@@ -4,14 +4,10 @@
 
 package frc.robot.auto.Commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Arm.ArmControlState;
 import frc.robot.subsystems.Arm.ArmState;
-import frc.robot.subsystems.Intake.IntakeState;
-
 
 public class CurrentSpike extends Command {
 
@@ -23,10 +19,6 @@ public class CurrentSpike extends Command {
   private double threshold = 18;
 
   private boolean outtake = false;
-
-  private double startTime;
-  private double time;
-  private double duration = 2.5;
     
   public CurrentSpike() {
   }
@@ -35,16 +27,12 @@ public class CurrentSpike extends Command {
     
     intake =  Intake.getInstance();
     arm =  Arm.getInstance();
-    startTime = Timer.getFPGATimestamp();
-  }
+    }
 
  
 
   @Override
   public void execute() {
-
-
-    time = Timer.getFPGATimestamp();
 
     if (intake.getCurrent() > threshold && !outtake) {
        arm.setState(ArmState.RETRACTED);
