@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   private boolean outtake;
   private boolean cycle;
   private boolean manual;
-
+  private boolean closedLoop = true;
   
    private Command currentSpike;
   private Command driveCommand;
@@ -43,8 +43,8 @@ public class Robot extends TimedRobot {
   //private static final String kCustomAuto = "New Path";
   private boolean isPathExecuted = false;
 
-  private Command m_autoSelected;
-  private SendableChooser<Command> m_chooser;
+  // private Command m_autoSelected;
+  // private SendableChooser<Command> m_chooser;
 
   @Override
   public void robotInit() {
@@ -61,16 +61,31 @@ public class Robot extends TimedRobot {
 
     drivebase.resetOdometry(new Pose2d(0.0, 0.0, new Rotation2d(0)));
 
-    m_chooser = AutoBuilder.buildAutoChooser();
-    m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
-    m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
-    m_chooser.addOption("Straight Auto", new PathPlannerAuto("Straight"));
-    SmartDashboard.putData("Auto choices", m_chooser);
+    // m_chooser = AutoBuilder.buildAutoChooser();
+    // m_chooser.setDefaultOption("Arm+Drive Auto", new TestAuto());
+    // m_chooser.addOption("DriveCommand", new PathPlannerAuto("TestAutov2"));
+    // m_chooser.addOption("Straight Auto", new PathPlannerAuto("Straight"));
+    // SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Front Left Angular SP", drivebase.getFLAngularSP());
+    SmartDashboard.putNumber("Back Left Angular SP", drivebase.getBLAngularSP());
+
+    SmartDashboard.putNumber("Front Right Angular SP", drivebase.getFRAngularSP());
+    SmartDashboard.putNumber("Back Right Angular SP", drivebase.getBRAngularSP());
+
+    SmartDashboard.putNumber("Front Left Desired Angle", drivebase.getFLDesiredAngle());
+    SmartDashboard.putNumber("Back Left Desired Angle", drivebase.getBLDesiredAngle());
+
+    SmartDashboard.putNumber("Front Right Desired Angle", drivebase.getFRDesiredAngle());
+    SmartDashboard.putNumber("Back Right Desired Angle", drivebase.getBRAngularSP());
+
+    SmartDashboard.putBoolean("Closed Loop", closedLoop);
+
+    // CommandScheduler.getInstance().run();
     drivebase.periodic();
 
     SmartDashboard.putBoolean("Arm Manual:", manual);
@@ -81,11 +96,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     //m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = new TestAuto();
+    // m_autoSelected = new TestAuto();
     
-    if (m_autoSelected != null) {
-      m_autoSelected.schedule();
-    }
+    // if (m_autoSelected != null) {
+    //   m_autoSelected.schedule();
+    // }
 
   
     visionTables.putInfoOnDashboard();
@@ -100,15 +115,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     currentSpike.initialize();
-    if (m_autoSelected != null) {
-      m_autoSelected.cancel();
-    }
+    // if (m_autoSelected != null) {
+    //   m_autoSelected.cancel();
+    // }
   
   }
 
   @Override
   public void teleopPeriodic() {
-
 
        if (arm.state != ArmState.RETRACTED) {
       outtake = operator.getRawButton(Controller.XBOX_A);
@@ -163,11 +177,15 @@ public class Robot extends TimedRobot {
        drivebase.lockWheels();
      } else if (driver.getAButton()){
         //drivebase.drive(0, 0, visAlign.getRotSpeed(), fieldRelative);
-        drivebase.drive(visAlign.getXSpeed(), visAlign.getYSpeed(), visAlign.getRotSpeed(), fieldRelative);
+        drivebase.drive(visAlign.getXSpeed(), visAlign.getYSpeed(), visAlign.getRotSpeed(), fieldRelative, closedLoop);
 
      } else {
-       drivebase.drive(xSpeed, ySpeed, rot, fieldRelative);
+       drivebase.drive(xSpeed, ySpeed, rot, fieldRelative, closedLoop);
       
+     }
+
+     if (driver.getBButton()){
+      closedLoop = !closedLoop;
      }
 
     // /* Arm Controls */
