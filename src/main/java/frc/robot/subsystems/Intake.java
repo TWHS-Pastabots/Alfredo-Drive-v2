@@ -64,6 +64,11 @@ public class Intake {
         SmartDashboard.putNumber("INTAKE VOLTS", intakeController.getBusVoltage());
     }
 
+    public  double getCurrent(){
+        return intakeController.getOutputCurrent();
+
+    }
+
     public static Intake getInstance() {
         if (instance == null) {
             instance = new Intake();
