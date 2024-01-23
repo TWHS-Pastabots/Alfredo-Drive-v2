@@ -1,7 +1,9 @@
-package frc.robot.subsystems.Swerve;
+package frc.robot.subsystems.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.*;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Ports;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivebase extends SubsystemBase {
@@ -52,7 +55,7 @@ public class Drivebase extends SubsystemBase {
     gyro = new AHRS(SPI.Port.kMXP);
 
 
-    gyro.setAngleAdjustment(90);
+   gyro.setAngleAdjustment(90);
     gyro.zeroYaw();
 
     odometry = new SwerveDriveOdometry(
@@ -72,7 +75,7 @@ public class Drivebase extends SubsystemBase {
 
     SmartDashboard.putData("FIELD", fieldmap);
 
-        // AutoBuilder.configureHolonomic(this::getPose, this::resetPose, this::getSpeeds, this::setChassisSpeed, config, this);
+        AutoBuilder.configureHolonomic(this::getPose, this::resetPose, this::getSpeeds, this::setChassisSpeed, config, this);
 
   }
 
@@ -118,7 +121,7 @@ public class Drivebase extends SubsystemBase {
         getPose());
   }
 
-  public void drive(double forward, double side, double rot, boolean fieldRelative, boolean closedLoop) {
+  public void drive(double forward, double side, double rot, boolean fieldRelative) {
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -137,10 +140,10 @@ public class Drivebase extends SubsystemBase {
             Rotation2d.fromDegrees(-gyro.getAngle()))
         : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
-    setChassisSpeed(chassisspeeds, closedLoop);
+    setChassisSpeed(chassisspeeds);
   }
 
-  public void setChassisSpeed(ChassisSpeeds input, boolean closedLoop) {
+  public void setChassisSpeed(ChassisSpeeds input) {
     var speeds = ChassisSpeeds.discretize(input, 0.02);
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
@@ -148,10 +151,10 @@ public class Drivebase extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
-    frontLeft.setDesiredState(swerveModuleStates[0], closedLoop);
-    backLeft.setDesiredState(swerveModuleStates[2], closedLoop);
-    frontRight.setDesiredState(swerveModuleStates[1], closedLoop);
-    backRight.setDesiredState(swerveModuleStates[3], closedLoop);
+    frontLeft.setDesiredState(swerveModuleStates[0]);
+    backLeft.setDesiredState(swerveModuleStates[2]);
+    frontRight.setDesiredState(swerveModuleStates[1]);
+    backRight.setDesiredState(swerveModuleStates[3]);
   }
 
   public SwerveModulePosition[] getPositions() {
@@ -177,60 +180,27 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void resetPose(final Pose2d pose) {
-    
     //odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose);
   }
 
-  public double getFLAngularSP(){
-    return frontLeft.getAngularSP();
-  }
-
-  public double getBLAngularSP(){
-    return backLeft.getAngularSP();
-  }
-
-   public double getFRAngularSP(){
-    return frontRight.getAngularSP();
-  }
-
-  public double getBRAngularSP(){
-    return backRight.getAngularSP();
-  }
-
-  
-  public double getFLDesiredAngle(){
-    return frontLeft.getDesiredAngle();
-  }
-
-  public double getBLDesiredAngle(){
-    return backLeft.getDesiredAngle();
-  }
-
-   public double getFRDesiredAngle(){
-    return frontRight.getDesiredAngle();
-  }
-
-  public double getBRDesiredAngle(){
-    return backRight.getDesiredAngle();
-  }
 
 
   public void lockWheels() {
-    frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
-    backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
-    frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
-    backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
+    frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
   }
 
-  // // sets state for all modules
-  // public void setModuleStates(SwerveModuleState[] desiredStates ) {
-  //   SwerveDriveKinematics.desaturateWheelSpeeds(
-  //       desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
-  //   frontLeft.setDesiredState(desiredStates[0]);
-  //   backLeft.setDesiredState(desiredStates[2]);
-  //   frontRight.setDesiredState(desiredStates[1]);
-  //   backRight.setDesiredState(desiredStates[3]);
-  // }
+  // sets state for all modules
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    frontLeft.setDesiredState(desiredStates[0]);
+    backLeft.setDesiredState(desiredStates[2]);
+    frontRight.setDesiredState(desiredStates[1]);
+    backRight.setDesiredState(desiredStates[3]);
+  }
 
   // sets drive encoders to 0
   public void resetEncoders() {
